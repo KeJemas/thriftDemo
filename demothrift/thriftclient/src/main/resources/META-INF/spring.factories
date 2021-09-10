@@ -1,0 +1,2 @@
+ut.pcmspf.common.rpc.thrift.client.annotation.EnableThriftClient=\
+ut.pcmspf.common.rpc.thrift.client.ThriftClientAutoConfiguration

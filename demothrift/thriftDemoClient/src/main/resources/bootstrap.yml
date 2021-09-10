@@ -1,0 +1,36 @@
+﻿server:
+  port: 9095
+spring:
+  application:
+    name: thriftDemoClient
+  profiles:
+    active: local
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: ${NACOS_NAMESPACE}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: ${NACOS_NAMESPACE}
+        file-extension: yaml
+        extension-configs[0]:
+          data-id: logback-common.properties
+          group: DEFAULT_GROUP
+          refresh: true
+  thrift:
+    client:
+      service-id: thriftDemoClientRpc
+      service-model: hsHa #服务线程模型（这里必须与服务端保持一致, 默认都是hsHa）
+      package-to-scan: cn.ut.demo.thrift # 标记由有注解@ThriftClient接口的包路径
+      ## 客户端连接池配置
+      pool:
+        retry-times: 3  # 异常失败，连接超时后的重试次数
+        ## key由IP + Port组成，唯一标识一个服务实例
+        pool-max-total-per-key: 200 # 客户端保持的最大连接数，包含不同的服务和服务实例
+        pool-min-idle-per-key: 10  # 每个服务实例最小的空闲连接数
+        pool-max-idle-per-key: 40  # 每个服务实例最大的空闲连接数
+        pool-max-wait: 30000  # 空闲连接最大存活时间
+        connect-timeout: 5000  # 连接超时时间

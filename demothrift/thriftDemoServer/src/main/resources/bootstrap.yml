@@ -1,0 +1,60 @@
+server:
+  port: 9093
+  undertow:
+    uri-encoding: UTF-8
+    io-threads: 8
+    worker-threads: 64
+    buffer-size: 1024
+    direct-buffers: true
+    accesslog:
+      dir: station-logs
+      enabled: false
+      pattern: common
+      prefix: access_log
+      suffix: log
+#spring 配置
+spring:
+  application:
+    name: thriftDemoServer
+  #指定配置文件t
+  profiles:
+    active: local
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: ${NACOS_NAMESPACE}
+      username: nacos
+      password: nacos
+      config:
+        server-addr: ${NACOS_SERVER_ADDR}
+        namespace: ${NACOS_NAMESPACE}
+        file-extension: yaml
+        extension-configs[0]:
+          data-id: logback-common.properties
+          group: DEFAULT_GROUP
+          refresh: true
+
+  # thrift 配置
+  thrift:
+    server:
+      service-id: thriftDemoServerRpc
+      service-model: hsHa
+      port: 3001
+      worker-queue-capacity: 1000
+      hs-ha:
+        min-worker-threads: 5
+        max-worker-threads: 20
+        keep-alived-time: 5
+      discovery:
+        namespace: ${NACOS_NAMESPACE}
+        host: ${NACOS_THRIFT_HOST}
+        port: ${NACOS_THRIFT_PORT}
+        enabled: true
+        tags:
+          - hsHa
+          - thriftDemoServerRpc-3001
+        health-check:
+          enabled: true
+          check-interval: 10
+          check-timeout: 3

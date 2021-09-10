@@ -1,0 +1,3 @@
+ut.pcmspf.common.rpc.thrift.server.annotation.EnableThriftServer=\
+ut.pcmspf.common.rpc.thrift.server.ThriftServerAutoConfiguration,\
+ut.pcmspf.common.rpc.thrift.server.ThriftServerDiscoveryConfiguration
